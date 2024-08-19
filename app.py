@@ -51,12 +51,12 @@ process_running = st.session_state.get("process_running", False)
 if st.button("Ask Question", disabled=process_running):
     st.session_state.process_running = True
     
-    # RECORDING AUTIO
+    # RECORDING AUDIO
     with st.spinner('Recording... Please wait.'):
         record_audio(audio_file_path, duration, fs, device_index)
     status_placeholder.text("Question generation complete...")
     
-    # TRANSCRIBING AUDIO
+    # AUDIO TRANSCRIBER 
     if os.path.exists(audio_file_path):
         with st.spinner('Transcribing with Whisper... Please wait.'):
             transcription_text = transcribe_audio(audio_file_path)
@@ -67,7 +67,7 @@ if st.button("Ask Question", disabled=process_running):
             unsafe_allow_html=True
         )
     
-    # GET LLM TEXT RESPONSE
+    # GET LLM TEXT RESPONSE GENERATOR
     if "transcription_text" in st.session_state:
         with st.spinner(f'Getting LLM answer with {model_choice}... Please wait.'):
             llm_response = get_llm_response(st.session_state.transcription_text, model_choice)
